@@ -14,5 +14,4 @@ df = pl.scan_csv(
     pl.lit(' ').alias('html_lawbox'),
     pl.lit(' ').alias('html_columbia'),
     pl.lit(' ').alias('html_with_citations'),
-    pl.lit(' ').alias('extracted_by_ocr'),
 ]).sink_csv(output_file, quote_char="`")
