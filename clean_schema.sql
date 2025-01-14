@@ -21,7 +21,7 @@ SET default_table_access_method = heap;
 -------
 --------------------------------------------
 
-CREATE TABLE public.search_court (
+CREATE UNLOGGED TABLE public.search_court (
     id character varying(15) NOT NULL,
     date_modified timestamp with time zone NOT NULL,
     in_use boolean NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE public.search_court (
     CONSTRAINT search_court_pacer_court_id_check CHECK ((pacer_court_id >= 0))
 );
 
-CREATE TABLE public.search_originatingcourtinformation (
+CREATE UNLOGGED TABLE public.search_originatingcourtinformation (
     id integer NOT NULL,
     date_created timestamp with time zone NOT NULL,
     date_modified timestamp with time zone NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE public.search_originatingcourtinformation (
     ordering_judge_str text NOT NULL
 );
 
-CREATE TABLE public.search_docket (
+CREATE UNLOGGED TABLE public.search_docket (
     id integer NOT NULL,
     date_created timestamp with time zone NOT NULL,
     date_modified timestamp with time zone NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE public.search_docket (
     parent_docket_id integer
 );
 
-CREATE TABLE public.search_opinioncluster (
+CREATE UNLOGGED TABLE public.search_opinioncluster (
     id integer NOT NULL,
     judges text NOT NULL,
     date_created timestamp with time zone NOT NULL,
@@ -157,19 +157,19 @@ CREATE TABLE public.search_opinioncluster (
     filepath_pdf_harvard character varying(100) NOT NULL
 );
 
-CREATE TABLE public.search_opinioncluster_panel (
+CREATE UNLOGGED TABLE public.search_opinioncluster_panel (
     id integer NOT NULL,
     opinioncluster_id integer NOT NULL,
     person_id integer NOT NULL
 );
 
-CREATE TABLE public.search_opinioncluster_non_participating_judges (
+CREATE UNLOGGED TABLE public.search_opinioncluster_non_participating_judges (
     id integer NOT NULL,
     opinioncluster_id integer NOT NULL,
     person_id integer NOT NULL
 );
 
-CREATE TABLE public.search_opinion (
+CREATE UNLOGGED TABLE public.search_opinion (
     id integer NOT NULL,
     date_created timestamp with time zone NOT NULL,
     date_modified timestamp with time zone NOT NULL,
@@ -194,13 +194,13 @@ CREATE TABLE public.search_opinion (
     ordering_key integer
 );
 
-CREATE TABLE public.search_opinion_joined_by (
+CREATE UNLOGGED TABLE public.search_opinion_joined_by (
     id integer NOT NULL,
     opinion_id integer NOT NULL,
     person_id integer NOT NULL
 );
 
-CREATE TABLE public.search_courthouse (
+CREATE UNLOGGED TABLE public.search_courthouse (
     id integer NOT NULL,
     court_seat boolean,
     building_name text NOT NULL,
@@ -214,20 +214,20 @@ CREATE TABLE public.search_courthouse (
     court_id character varying(15) NOT NULL
 );
 
-CREATE TABLE public.search_court_appeals_to (
+CREATE UNLOGGED TABLE public.search_court_appeals_to (
     id integer NOT NULL,
     from_court_id character varying(15) NOT NULL,
     to_court_id character varying(15) NOT NULL
 );
 
-CREATE TABLE public.search_opinionscited (
+CREATE UNLOGGED TABLE public.search_opinionscited (
     id integer NOT NULL,
     cited_opinion_id integer NOT NULL,
     citing_opinion_id integer NOT NULL,
     depth integer NOT NULL
 );
 
-CREATE TABLE public.search_citation (
+CREATE UNLOGGED TABLE public.search_citation (
     id integer NOT NULL,
     volume smallint NOT NULL,
     reporter text NOT NULL,
@@ -236,7 +236,7 @@ CREATE TABLE public.search_citation (
     cluster_id integer NOT NULL
 );
 
-CREATE TABLE public.search_parenthetical (
+CREATE UNLOGGED TABLE public.search_parenthetical (
     id integer NOT NULL,
     text text NOT NULL,
     score double precision NOT NULL,
