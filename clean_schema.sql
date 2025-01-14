@@ -245,5 +245,9 @@ CREATE UNLOGGED TABLE public.search_parenthetical (
     group_id integer
 );
 
-CREATE INDEX idx_search_docket_date_modified
-ON public.search_docket (date_modified);
+CREATE UNIQUE INDEX idx_search_opinioncluster_id on public.search_opinioncluster(id);
+CREATE INDEX idx_search_opinioncluster_docket_id on public.search_opinioncluster(docket_id);
+CREATE UNIQUE INDEX idx_search_docket_id ON public.search_docket(id);
+CREATE INDEX idx_search_docket_date_modified ON public.search_docket(date_modified);
+CREATE UNIQUE INDEX idx_search_opinion_id on public.search_opinion(id);
+CREATE INDEX idx_search_opinion_cluster_id on public.search_opinion(cluster_id);
