@@ -64,13 +64,13 @@ psql --command "\COPY public.search_opinioncluster_non_participating_judges (
 	       id, opinioncluster_id, person_id
 	   ) FROM '$BULK_DIR/search_opinioncluster_non_participating_judges-2024-12-31.csv' WITH (FORMAT csv, ENCODING utf8, QUOTE '\`', HEADER)" --host "$BULK_DB_HOST" --username "$BULK_DB_USER" --dbname "$BULK_DB_NAME"
 
-# echo "Loading opinions-2024-12-31.csv to database"
-# psql --command "\COPY public.search_opinion (
-# 	       id, date_created, date_modified, author_str, per_curiam, joined_by_str,
-# 	       type, sha1, page_count, download_url, local_path, plain_text, html,
-# 	       html_lawbox, html_columbia, html_anon_2020, xml_harvard,
-# 	       html_with_citations, extracted_by_ocr, author_id, cluster_id
-# 	   ) FROM '$BULK_DIR/opinions-2024-12-31.csv' WITH (FORMAT csv, ENCODING utf8, QUOTE '\`', HEADER)" --host "$BULK_DB_HOST" --username "$BULK_DB_USER" --dbname "$BULK_DB_NAME"
+echo "Loading opinions-2024-12-31.csv to database"
+psql --command "\COPY public.search_opinion (
+	       id, date_created, date_modified, author_str, per_curiam, joined_by_str,
+	       type, sha1, page_count, download_url, local_path, plain_text, html,
+	       html_lawbox, html_columbia, html_anon_2020, xml_harvard,
+	       html_with_citations, extracted_by_ocr, author_id, cluster_id
+	   ) FROM '$BULK_DIR/opinions_stripped-2024-12-31.csv' WITH (FORMAT csv, ENCODING utf8, QUOTE '\`', HEADER)" --host "$BULK_DB_HOST" --username "$BULK_DB_USER" --dbname "$BULK_DB_NAME"
 
 echo "Loading search_opinion_joined_by-2024-12-31.csv to database"
 psql --command "\COPY public.search_opinion_joined_by (
