@@ -245,3 +245,5 @@ CREATE UNLOGGED TABLE public.search_parenthetical (
     group_id integer
 );
 
+CREATE INDEX idx_search_docket_date_modified
+ON public.search_docket (date_modified);

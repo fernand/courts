@@ -9,9 +9,9 @@ df = pl.scan_csv(
     quote_char="`",
     ignore_errors=False,
 ).with_columns([
-    pl.lit(' ').alias('plain_text'),
-    pl.lit(' ').alias('html'),
-    pl.lit(' ').alias('html_lawbox'),
-    pl.lit(' ').alias('html_columbia'),
-    pl.lit(' ').alias('html_with_citations'),
+    pl.lit('').alias('plain_text'),
+    pl.lit('').alias('html'),
+    pl.lit('').alias('html_lawbox'),
+    pl.lit('').alias('html_columbia'),
+    pl.lit('').alias('html_with_citations'),
 ]).sink_csv(output_file, quote_char="`")
