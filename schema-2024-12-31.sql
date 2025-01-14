@@ -17,9 +17,14 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: courtlistener; Type: DATABASE; Schema: -; Owner: django
+--
+
 CREATE DATABASE courtlistener WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.UTF-8';
 
 
+ALTER DATABASE courtlistener OWNER TO django;
 
 \connect courtlistener
 
@@ -40,6 +45,218 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: audio_audio; Type: TABLE; Schema: public; Owner: django
+--
+
+CREATE TABLE public.audio_audio (
+    id integer NOT NULL,
+    source character varying(10) NOT NULL,
+    case_name_short text NOT NULL,
+    case_name text NOT NULL,
+    case_name_full text NOT NULL,
+    judges text,
+    date_created timestamp with time zone NOT NULL,
+    date_modified timestamp with time zone NOT NULL,
+    sha1 character varying(40) NOT NULL,
+    download_url character varying(500),
+    local_path_mp3 character varying(100) NOT NULL,
+    local_path_original_file character varying(100) NOT NULL,
+    duration smallint,
+    processing_complete boolean NOT NULL,
+    date_blocked date,
+    blocked boolean NOT NULL,
+    docket_id integer,
+    stt_status smallint NOT NULL,
+    filepath_ia character varying(1000) NOT NULL,
+    ia_upload_failure_count smallint,
+    stt_source smallint,
+    stt_transcript text NOT NULL
+);
+
+
+ALTER TABLE public.audio_audio OWNER TO django;
+
+--
+-- Name: audio_audio_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE public.audio_audio_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.audio_audio_id_seq OWNER TO django;
+
+--
+-- Name: audio_audio_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE public.audio_audio_id_seq OWNED BY public.audio_audio.id;
+
+
+--
+-- Name: audio_audio_panel; Type: TABLE; Schema: public; Owner: django
+--
+
+CREATE TABLE public.audio_audio_panel (
+    id integer NOT NULL,
+    audio_id integer NOT NULL,
+    person_id integer NOT NULL
+);
+
+
+ALTER TABLE public.audio_audio_panel OWNER TO django;
+
+--
+-- Name: audio_audio_panel_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE public.audio_audio_panel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.audio_audio_panel_id_seq OWNER TO django;
+
+--
+-- Name: audio_audio_panel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE public.audio_audio_panel_id_seq OWNED BY public.audio_audio_panel.id;
+
+
+--
+-- Name: audio_audioevent; Type: TABLE; Schema: public; Owner: django
+--
+
+CREATE TABLE public.audio_audioevent (
+    pgh_id integer NOT NULL,
+    pgh_created_at timestamp with time zone NOT NULL,
+    pgh_label text NOT NULL,
+    id integer NOT NULL,
+    date_created timestamp with time zone NOT NULL,
+    date_modified timestamp with time zone NOT NULL,
+    source character varying(10) NOT NULL,
+    case_name_short text NOT NULL,
+    case_name text NOT NULL,
+    case_name_full text NOT NULL,
+    judges text,
+    sha1 character varying(40) NOT NULL,
+    download_url character varying(500),
+    local_path_mp3 character varying(100) NOT NULL,
+    local_path_original_file character varying(100) NOT NULL,
+    filepath_ia character varying(1000) NOT NULL,
+    ia_upload_failure_count smallint,
+    duration smallint,
+    processing_complete boolean NOT NULL,
+    date_blocked date,
+    blocked boolean NOT NULL,
+    stt_status smallint NOT NULL,
+    docket_id integer,
+    pgh_context_id uuid,
+    pgh_obj_id integer NOT NULL,
+    stt_source smallint,
+    stt_transcript text NOT NULL
+);
+
+
+ALTER TABLE public.audio_audioevent OWNER TO django;
+
+--
+-- Name: audio_audioevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE public.audio_audioevent_pgh_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.audio_audioevent_pgh_id_seq OWNER TO django;
+
+--
+-- Name: audio_audioevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE public.audio_audioevent_pgh_id_seq OWNED BY public.audio_audioevent.pgh_id;
+
+
+--
+-- Name: audio_audiopanelevent; Type: TABLE; Schema: public; Owner: django
+--
+
+CREATE TABLE public.audio_audiopanelevent (
+    pgh_id integer NOT NULL,
+    pgh_created_at timestamp with time zone NOT NULL,
+    pgh_label text NOT NULL,
+    id integer NOT NULL,
+    audio_id integer NOT NULL,
+    person_id integer NOT NULL,
+    pgh_context_id uuid
+);
+
+
+ALTER TABLE public.audio_audiopanelevent OWNER TO django;
+
+--
+-- Name: audio_audiopanelevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE public.audio_audiopanelevent_pgh_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.audio_audiopanelevent_pgh_id_seq OWNER TO django;
+
+--
+-- Name: audio_audiopanelevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE public.audio_audiopanelevent_pgh_id_seq OWNED BY public.audio_audiopanelevent.pgh_id;
+
+
+--
+-- Name: audio_audiotranscriptionmetadata; Type: TABLE; Schema: public; Owner: django
+--
+
+CREATE TABLE public.audio_audiotranscriptionmetadata (
+    id integer NOT NULL,
+    metadata jsonb NOT NULL,
+    audio_id integer NOT NULL
+);
+
+
+ALTER TABLE public.audio_audiotranscriptionmetadata OWNER TO django;
+
+--
+-- Name: audio_audiotranscriptionmetadata_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+ALTER TABLE public.audio_audiotranscriptionmetadata ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.audio_audiotranscriptionmetadata_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: disclosures_agreement; Type: TABLE; Schema: public; Owner: django
 --
 
@@ -54,6 +271,7 @@ CREATE TABLE public.disclosures_agreement (
 );
 
 
+ALTER TABLE public.disclosures_agreement OWNER TO django;
 
 --
 -- Name: disclosures_agreement_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -68,6 +286,7 @@ CREATE SEQUENCE public.disclosures_agreement_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_agreement_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_agreement_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -96,6 +315,7 @@ CREATE TABLE public.disclosures_agreementevent (
 );
 
 
+ALTER TABLE public.disclosures_agreementevent OWNER TO django;
 
 --
 -- Name: disclosures_agreementevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -110,6 +330,7 @@ CREATE SEQUENCE public.disclosures_agreementevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_agreementevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_agreementevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -134,6 +355,7 @@ CREATE TABLE public.disclosures_debt (
 );
 
 
+ALTER TABLE public.disclosures_debt OWNER TO django;
 
 --
 -- Name: disclosures_debt_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -148,6 +370,7 @@ CREATE SEQUENCE public.disclosures_debt_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_debt_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_debt_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -177,6 +400,7 @@ CREATE TABLE public.disclosures_debtevent (
 );
 
 
+ALTER TABLE public.disclosures_debtevent OWNER TO django;
 
 --
 -- Name: disclosures_debtevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -191,6 +415,7 @@ CREATE SEQUENCE public.disclosures_debtevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_debtevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_debtevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -223,6 +448,7 @@ CREATE TABLE public.disclosures_financialdisclosure (
 );
 
 
+ALTER TABLE public.disclosures_financialdisclosure OWNER TO django;
 
 --
 -- Name: disclosures_financialdisclosure_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -237,6 +463,7 @@ CREATE SEQUENCE public.disclosures_financialdisclosure_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_financialdisclosure_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_financialdisclosure_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -274,6 +501,7 @@ CREATE TABLE public.disclosures_financialdisclosureevent (
 );
 
 
+ALTER TABLE public.disclosures_financialdisclosureevent OWNER TO django;
 
 --
 -- Name: disclosures_financialdisclosureevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -288,6 +516,7 @@ CREATE SEQUENCE public.disclosures_financialdisclosureevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_financialdisclosureevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_financialdisclosureevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -312,6 +541,7 @@ CREATE TABLE public.disclosures_gift (
 );
 
 
+ALTER TABLE public.disclosures_gift OWNER TO django;
 
 --
 -- Name: disclosures_gift_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -326,6 +556,7 @@ CREATE SEQUENCE public.disclosures_gift_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_gift_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_gift_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -355,6 +586,7 @@ CREATE TABLE public.disclosures_giftevent (
 );
 
 
+ALTER TABLE public.disclosures_giftevent OWNER TO django;
 
 --
 -- Name: disclosures_giftevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -369,6 +601,7 @@ CREATE SEQUENCE public.disclosures_giftevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_giftevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_giftevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -403,6 +636,7 @@ CREATE TABLE public.disclosures_investment (
 );
 
 
+ALTER TABLE public.disclosures_investment OWNER TO django;
 
 --
 -- Name: disclosures_investment_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -417,6 +651,7 @@ CREATE SEQUENCE public.disclosures_investment_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_investment_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_investment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -456,6 +691,7 @@ CREATE TABLE public.disclosures_investmentevent (
 );
 
 
+ALTER TABLE public.disclosures_investmentevent OWNER TO django;
 
 --
 -- Name: disclosures_investmentevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -470,6 +706,7 @@ CREATE SEQUENCE public.disclosures_investmentevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_investmentevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_investmentevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -494,6 +731,7 @@ CREATE TABLE public.disclosures_noninvestmentincome (
 );
 
 
+ALTER TABLE public.disclosures_noninvestmentincome OWNER TO django;
 
 --
 -- Name: disclosures_noninvestmentincome_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -508,6 +746,7 @@ CREATE SEQUENCE public.disclosures_noninvestmentincome_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_noninvestmentincome_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_noninvestmentincome_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -537,6 +776,7 @@ CREATE TABLE public.disclosures_noninvestmentincomeevent (
 );
 
 
+ALTER TABLE public.disclosures_noninvestmentincomeevent OWNER TO django;
 
 --
 -- Name: disclosures_noninvestmentincomeevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -551,6 +791,7 @@ CREATE SEQUENCE public.disclosures_noninvestmentincomeevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_noninvestmentincomeevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_noninvestmentincomeevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -574,6 +815,7 @@ CREATE TABLE public.disclosures_position (
 );
 
 
+ALTER TABLE public.disclosures_position OWNER TO django;
 
 --
 -- Name: disclosures_position_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -588,6 +830,7 @@ CREATE SEQUENCE public.disclosures_position_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_position_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_position_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -616,6 +859,7 @@ CREATE TABLE public.disclosures_positionevent (
 );
 
 
+ALTER TABLE public.disclosures_positionevent OWNER TO django;
 
 --
 -- Name: disclosures_positionevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -630,6 +874,7 @@ CREATE SEQUENCE public.disclosures_positionevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_positionevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_positionevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -656,6 +901,7 @@ CREATE TABLE public.disclosures_reimbursement (
 );
 
 
+ALTER TABLE public.disclosures_reimbursement OWNER TO django;
 
 --
 -- Name: disclosures_reimbursement_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -670,6 +916,7 @@ CREATE SEQUENCE public.disclosures_reimbursement_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_reimbursement_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_reimbursement_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -701,6 +948,7 @@ CREATE TABLE public.disclosures_reimbursementevent (
 );
 
 
+ALTER TABLE public.disclosures_reimbursementevent OWNER TO django;
 
 --
 -- Name: disclosures_reimbursementevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -715,6 +963,7 @@ CREATE SEQUENCE public.disclosures_reimbursementevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_reimbursementevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_reimbursementevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -738,6 +987,7 @@ CREATE TABLE public.disclosures_spouseincome (
 );
 
 
+ALTER TABLE public.disclosures_spouseincome OWNER TO django;
 
 --
 -- Name: disclosures_spouseincome_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -752,6 +1002,7 @@ CREATE SEQUENCE public.disclosures_spouseincome_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_spouseincome_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_spouseincome_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -780,6 +1031,7 @@ CREATE TABLE public.disclosures_spouseincomeevent (
 );
 
 
+ALTER TABLE public.disclosures_spouseincomeevent OWNER TO django;
 
 --
 -- Name: disclosures_spouseincomeevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -794,6 +1046,7 @@ CREATE SEQUENCE public.disclosures_spouseincomeevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.disclosures_spouseincomeevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: disclosures_spouseincomeevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -817,6 +1070,7 @@ CREATE TABLE public.people_db_abarating (
 );
 
 
+ALTER TABLE public.people_db_abarating OWNER TO django;
 
 --
 -- Name: people_db_abarating_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -830,6 +1084,7 @@ CREATE SEQUENCE public.people_db_abarating_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_abarating_id_seq OWNER TO django;
 
 --
 -- Name: people_db_abarating_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -858,6 +1113,7 @@ CREATE TABLE public.people_db_abaratingevent (
 );
 
 
+ALTER TABLE public.people_db_abaratingevent OWNER TO django;
 
 --
 -- Name: people_db_abaratingevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -872,6 +1128,7 @@ CREATE SEQUENCE public.people_db_abaratingevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_abaratingevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_abaratingevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -896,6 +1153,7 @@ CREATE TABLE public.people_db_attorney (
 );
 
 
+ALTER TABLE public.people_db_attorney OWNER TO django;
 
 --
 -- Name: people_db_attorney_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -909,6 +1167,7 @@ CREATE SEQUENCE public.people_db_attorney_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_attorney_id_seq OWNER TO django;
 
 --
 -- Name: people_db_attorney_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -935,6 +1194,7 @@ CREATE TABLE public.people_db_attorneyorganization (
 );
 
 
+ALTER TABLE public.people_db_attorneyorganization OWNER TO django;
 
 --
 -- Name: people_db_attorneyorganization_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -948,6 +1208,7 @@ CREATE SEQUENCE public.people_db_attorneyorganization_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_attorneyorganization_id_seq OWNER TO django;
 
 --
 -- Name: people_db_attorneyorganization_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -968,6 +1229,7 @@ CREATE TABLE public.people_db_attorneyorganizationassociation (
 );
 
 
+ALTER TABLE public.people_db_attorneyorganizationassociation OWNER TO django;
 
 --
 -- Name: people_db_attorneyorganizationassociation_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -981,6 +1243,7 @@ CREATE SEQUENCE public.people_db_attorneyorganizationassociation_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_attorneyorganizationassociation_id_seq OWNER TO django;
 
 --
 -- Name: people_db_attorneyorganizationassociation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1001,6 +1264,7 @@ CREATE TABLE public.people_db_criminalcomplaint (
 );
 
 
+ALTER TABLE public.people_db_criminalcomplaint OWNER TO django;
 
 --
 -- Name: people_db_criminalcomplaint_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1014,6 +1278,7 @@ CREATE SEQUENCE public.people_db_criminalcomplaint_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_criminalcomplaint_id_seq OWNER TO django;
 
 --
 -- Name: people_db_criminalcomplaint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1035,6 +1300,7 @@ CREATE TABLE public.people_db_criminalcount (
 );
 
 
+ALTER TABLE public.people_db_criminalcount OWNER TO django;
 
 --
 -- Name: people_db_criminalcount_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1048,6 +1314,7 @@ CREATE SEQUENCE public.people_db_criminalcount_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_criminalcount_id_seq OWNER TO django;
 
 --
 -- Name: people_db_criminalcount_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1073,6 +1340,7 @@ CREATE TABLE public.people_db_education (
 );
 
 
+ALTER TABLE public.people_db_education OWNER TO django;
 
 --
 -- Name: people_db_education_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1086,6 +1354,7 @@ CREATE SEQUENCE public.people_db_education_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_education_id_seq OWNER TO django;
 
 --
 -- Name: people_db_education_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1116,6 +1385,7 @@ CREATE TABLE public.people_db_educationevent (
 );
 
 
+ALTER TABLE public.people_db_educationevent OWNER TO django;
 
 --
 -- Name: people_db_educationevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1130,6 +1400,7 @@ CREATE SEQUENCE public.people_db_educationevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_educationevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_educationevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1151,6 +1422,7 @@ CREATE TABLE public.people_db_party (
 );
 
 
+ALTER TABLE public.people_db_party OWNER TO django;
 
 --
 -- Name: people_db_party_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1164,6 +1436,7 @@ CREATE SEQUENCE public.people_db_party_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_party_id_seq OWNER TO django;
 
 --
 -- Name: people_db_party_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1188,6 +1461,7 @@ CREATE TABLE public.people_db_partytype (
 );
 
 
+ALTER TABLE public.people_db_partytype OWNER TO django;
 
 --
 -- Name: people_db_partytype_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1201,6 +1475,7 @@ CREATE SEQUENCE public.people_db_partytype_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_partytype_id_seq OWNER TO django;
 
 --
 -- Name: people_db_partytype_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1243,6 +1518,8 @@ CREATE TABLE public.people_db_person (
 );
 
 
+ALTER TABLE public.people_db_person OWNER TO django;
+
 --
 -- Name: people_db_person_id_seq; Type: SEQUENCE; Schema: public; Owner: django
 --
@@ -1255,6 +1532,7 @@ CREATE SEQUENCE public.people_db_person_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_person_id_seq OWNER TO django;
 
 --
 -- Name: people_db_person_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1274,6 +1552,7 @@ CREATE TABLE public.people_db_person_race (
 );
 
 
+ALTER TABLE public.people_db_person_race OWNER TO django;
 
 --
 -- Name: people_db_person_race_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1287,6 +1566,7 @@ CREATE SEQUENCE public.people_db_person_race_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_person_race_id_seq OWNER TO django;
 
 --
 -- Name: people_db_person_race_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1334,6 +1614,7 @@ CREATE TABLE public.people_db_personevent (
 );
 
 
+ALTER TABLE public.people_db_personevent OWNER TO django;
 
 --
 -- Name: people_db_personevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1348,6 +1629,7 @@ CREATE SEQUENCE public.people_db_personevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_personevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_personevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1371,6 +1653,7 @@ CREATE TABLE public.people_db_personraceevent (
 );
 
 
+ALTER TABLE public.people_db_personraceevent OWNER TO django;
 
 --
 -- Name: people_db_personraceevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1385,6 +1668,7 @@ CREATE SEQUENCE public.people_db_personraceevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_personraceevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_personraceevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1411,6 +1695,7 @@ CREATE TABLE public.people_db_politicalaffiliation (
 );
 
 
+ALTER TABLE public.people_db_politicalaffiliation OWNER TO django;
 
 --
 -- Name: people_db_politicalaffiliation_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1424,6 +1709,7 @@ CREATE SEQUENCE public.people_db_politicalaffiliation_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_politicalaffiliation_id_seq OWNER TO django;
 
 --
 -- Name: people_db_politicalaffiliation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1455,6 +1741,7 @@ CREATE TABLE public.people_db_politicalaffiliationevent (
 );
 
 
+ALTER TABLE public.people_db_politicalaffiliationevent OWNER TO django;
 
 --
 -- Name: people_db_politicalaffiliationevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1469,6 +1756,7 @@ CREATE SEQUENCE public.people_db_politicalaffiliationevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_politicalaffiliationevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_politicalaffiliationevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1525,6 +1813,7 @@ CREATE TABLE public.people_db_position (
 );
 
 
+ALTER TABLE public.people_db_position OWNER TO django;
 
 --
 -- Name: people_db_position_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1538,6 +1827,7 @@ CREATE SEQUENCE public.people_db_position_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_position_id_seq OWNER TO django;
 
 --
 -- Name: people_db_position_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1599,6 +1889,7 @@ CREATE TABLE public.people_db_positionevent (
 );
 
 
+ALTER TABLE public.people_db_positionevent OWNER TO django;
 
 --
 -- Name: people_db_positionevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1613,6 +1904,7 @@ CREATE SEQUENCE public.people_db_positionevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_positionevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_positionevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1631,6 +1923,7 @@ CREATE TABLE public.people_db_race (
 );
 
 
+ALTER TABLE public.people_db_race OWNER TO django;
 
 --
 -- Name: people_db_race_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1644,6 +1937,7 @@ CREATE SEQUENCE public.people_db_race_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_race_id_seq OWNER TO django;
 
 --
 -- Name: people_db_race_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1667,6 +1961,7 @@ CREATE TABLE public.people_db_raceevent (
 );
 
 
+ALTER TABLE public.people_db_raceevent OWNER TO django;
 
 --
 -- Name: people_db_raceevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1681,6 +1976,7 @@ CREATE SEQUENCE public.people_db_raceevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_raceevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_raceevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1711,6 +2007,7 @@ CREATE TABLE public.people_db_retentionevent (
 );
 
 
+ALTER TABLE public.people_db_retentionevent OWNER TO django;
 
 --
 -- Name: people_db_retentionevent_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1724,6 +2021,7 @@ CREATE SEQUENCE public.people_db_retentionevent_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_retentionevent_id_seq OWNER TO django;
 
 --
 -- Name: people_db_retentionevent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1759,6 +2057,7 @@ CREATE TABLE public.people_db_retentioneventevent (
 );
 
 
+ALTER TABLE public.people_db_retentioneventevent OWNER TO django;
 
 --
 -- Name: people_db_retentioneventevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1773,6 +2072,7 @@ CREATE SEQUENCE public.people_db_retentioneventevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_retentioneventevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_retentioneventevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1796,6 +2096,7 @@ CREATE TABLE public.people_db_role (
 );
 
 
+ALTER TABLE public.people_db_role OWNER TO django;
 
 --
 -- Name: people_db_role_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1809,6 +2110,7 @@ CREATE SEQUENCE public.people_db_role_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_role_id_seq OWNER TO django;
 
 --
 -- Name: people_db_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1831,6 +2133,7 @@ CREATE TABLE public.people_db_school (
 );
 
 
+ALTER TABLE public.people_db_school OWNER TO django;
 
 --
 -- Name: people_db_school_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1844,6 +2147,7 @@ CREATE SEQUENCE public.people_db_school_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_school_id_seq OWNER TO django;
 
 --
 -- Name: people_db_school_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1871,6 +2175,7 @@ CREATE TABLE public.people_db_schoolevent (
 );
 
 
+ALTER TABLE public.people_db_schoolevent OWNER TO django;
 
 --
 -- Name: people_db_schoolevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1885,6 +2190,7 @@ CREATE SEQUENCE public.people_db_schoolevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_schoolevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_schoolevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1908,6 +2214,7 @@ CREATE TABLE public.people_db_source (
 );
 
 
+ALTER TABLE public.people_db_source OWNER TO django;
 
 --
 -- Name: people_db_source_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1921,6 +2228,7 @@ CREATE SEQUENCE public.people_db_source_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_source_id_seq OWNER TO django;
 
 --
 -- Name: people_db_source_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1949,6 +2257,7 @@ CREATE TABLE public.people_db_sourceevent (
 );
 
 
+ALTER TABLE public.people_db_sourceevent OWNER TO django;
 
 --
 -- Name: people_db_sourceevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -1963,6 +2272,7 @@ CREATE SEQUENCE public.people_db_sourceevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.people_db_sourceevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: people_db_sourceevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -1989,6 +2299,7 @@ CREATE TABLE public.recap_emailprocessingqueue (
 );
 
 
+ALTER TABLE public.recap_emailprocessingqueue OWNER TO django;
 
 --
 -- Name: recap_emailprocessingqueue_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2003,6 +2314,7 @@ CREATE SEQUENCE public.recap_emailprocessingqueue_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_emailprocessingqueue_id_seq OWNER TO django;
 
 --
 -- Name: recap_emailprocessingqueue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2022,6 +2334,7 @@ CREATE TABLE public.recap_emailprocessingqueue_recap_documents (
 );
 
 
+ALTER TABLE public.recap_emailprocessingqueue_recap_documents OWNER TO django;
 
 --
 -- Name: recap_emailprocessingqueue_recap_documents_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2036,6 +2349,7 @@ CREATE SEQUENCE public.recap_emailprocessingqueue_recap_documents_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_emailprocessingqueue_recap_documents_id_seq OWNER TO django;
 
 --
 -- Name: recap_emailprocessingqueue_recap_documents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2091,6 +2405,7 @@ CREATE TABLE public.recap_fjcintegrateddatabase (
 );
 
 
+ALTER TABLE public.recap_fjcintegrateddatabase OWNER TO django;
 
 --
 -- Name: recap_fjcintegrateddatabase_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2104,6 +2419,7 @@ CREATE SEQUENCE public.recap_fjcintegrateddatabase_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_fjcintegrateddatabase_id_seq OWNER TO django;
 
 --
 -- Name: recap_fjcintegrateddatabase_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2140,6 +2456,7 @@ CREATE TABLE public.recap_pacerfetchqueue (
 );
 
 
+ALTER TABLE public.recap_pacerfetchqueue OWNER TO django;
 
 --
 -- Name: recap_pacerfetchqueue_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2154,6 +2471,7 @@ CREATE SEQUENCE public.recap_pacerfetchqueue_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_pacerfetchqueue_id_seq OWNER TO django;
 
 --
 -- Name: recap_pacerfetchqueue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2178,6 +2496,7 @@ CREATE TABLE public.recap_pacerhtmlfiles (
 );
 
 
+ALTER TABLE public.recap_pacerhtmlfiles OWNER TO django;
 
 --
 -- Name: recap_pacerhtmlfiles_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2191,6 +2510,7 @@ CREATE SEQUENCE public.recap_pacerhtmlfiles_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_pacerhtmlfiles_id_seq OWNER TO django;
 
 --
 -- Name: recap_pacerhtmlfiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2225,6 +2545,7 @@ CREATE TABLE public.recap_processingqueue (
 );
 
 
+ALTER TABLE public.recap_processingqueue OWNER TO django;
 
 --
 -- Name: recap_processingqueue_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2238,6 +2559,7 @@ CREATE SEQUENCE public.recap_processingqueue_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_processingqueue_id_seq OWNER TO django;
 
 --
 -- Name: recap_processingqueue_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2259,6 +2581,7 @@ CREATE TABLE public.recap_rss_rssfeeddata (
 );
 
 
+ALTER TABLE public.recap_rss_rssfeeddata OWNER TO django;
 
 --
 -- Name: recap_rss_rssfeeddata_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2273,6 +2596,7 @@ CREATE SEQUENCE public.recap_rss_rssfeeddata_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_rss_rssfeeddata_id_seq OWNER TO django;
 
 --
 -- Name: recap_rss_rssfeeddata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2296,6 +2620,7 @@ CREATE TABLE public.recap_rss_rssfeedstatus (
 );
 
 
+ALTER TABLE public.recap_rss_rssfeedstatus OWNER TO django;
 
 --
 -- Name: recap_rss_rssfeedstatus_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2309,6 +2634,7 @@ CREATE SEQUENCE public.recap_rss_rssfeedstatus_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_rss_rssfeedstatus_id_seq OWNER TO django;
 
 --
 -- Name: recap_rss_rssfeedstatus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2328,6 +2654,7 @@ CREATE TABLE public.recap_rss_rssitemcache (
 );
 
 
+ALTER TABLE public.recap_rss_rssitemcache OWNER TO django;
 
 --
 -- Name: recap_rss_rssitemcache_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2341,6 +2668,7 @@ CREATE SEQUENCE public.recap_rss_rssitemcache_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.recap_rss_rssitemcache_id_seq OWNER TO django;
 
 --
 -- Name: recap_rss_rssitemcache_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2378,6 +2706,7 @@ CREATE TABLE public.search_court (
 );
 
 
+ALTER TABLE public.search_court OWNER TO django;
 
 --
 -- Name: search_docket; Type: TABLE; Schema: public; Owner: django
@@ -2439,6 +2768,7 @@ CREATE TABLE public.search_docket (
 );
 
 
+ALTER TABLE public.search_docket OWNER TO django;
 
 --
 -- Name: search_opinion; Type: TABLE; Schema: public; Owner: django
@@ -2470,6 +2800,7 @@ CREATE TABLE public.search_opinion (
 );
 
 
+ALTER TABLE public.search_opinion OWNER TO django;
 
 --
 -- Name: search_opinioncluster; Type: TABLE; Schema: public; Owner: django
@@ -2515,6 +2846,7 @@ CREATE TABLE public.search_opinioncluster (
 );
 
 
+ALTER TABLE public.search_opinioncluster OWNER TO django;
 
 --
 -- Name: search_bankruptcyinformation; Type: TABLE; Schema: public; Owner: django
@@ -2534,6 +2866,7 @@ CREATE TABLE public.search_bankruptcyinformation (
 );
 
 
+ALTER TABLE public.search_bankruptcyinformation OWNER TO django;
 
 --
 -- Name: search_bankruptcyinformation_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2548,6 +2881,7 @@ CREATE SEQUENCE public.search_bankruptcyinformation_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_bankruptcyinformation_id_seq OWNER TO django;
 
 --
 -- Name: search_bankruptcyinformation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2579,6 +2913,7 @@ CREATE TABLE public.search_bankruptcyinformationevent (
 );
 
 
+ALTER TABLE public.search_bankruptcyinformationevent OWNER TO django;
 
 --
 -- Name: search_bankruptcyinformationevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2593,6 +2928,7 @@ CREATE SEQUENCE public.search_bankruptcyinformationevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_bankruptcyinformationevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_bankruptcyinformationevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2615,6 +2951,7 @@ CREATE TABLE public.search_citation (
 );
 
 
+ALTER TABLE public.search_citation OWNER TO django;
 
 --
 -- Name: search_citation_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2628,6 +2965,7 @@ CREATE SEQUENCE public.search_citation_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_citation_id_seq OWNER TO django;
 
 --
 -- Name: search_citation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2655,6 +2993,7 @@ CREATE TABLE public.search_citationevent (
 );
 
 
+ALTER TABLE public.search_citationevent OWNER TO django;
 
 --
 -- Name: search_citationevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2669,6 +3008,7 @@ CREATE SEQUENCE public.search_citationevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_citationevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_citationevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2706,6 +3046,7 @@ CREATE TABLE public.search_claim (
 );
 
 
+ALTER TABLE public.search_claim OWNER TO django;
 
 --
 -- Name: search_claim_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2720,6 +3061,7 @@ CREATE SEQUENCE public.search_claim_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claim_id_seq OWNER TO django;
 
 --
 -- Name: search_claim_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2739,6 +3081,7 @@ CREATE TABLE public.search_claim_tags (
 );
 
 
+ALTER TABLE public.search_claim_tags OWNER TO django;
 
 --
 -- Name: search_claim_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2753,6 +3096,7 @@ CREATE SEQUENCE public.search_claim_tags_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claim_tags_id_seq OWNER TO django;
 
 --
 -- Name: search_claim_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2795,6 +3139,7 @@ CREATE TABLE public.search_claimevent (
 );
 
 
+ALTER TABLE public.search_claimevent OWNER TO django;
 
 --
 -- Name: search_claimevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2809,6 +3154,7 @@ CREATE SEQUENCE public.search_claimevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claimevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_claimevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2852,6 +3198,7 @@ CREATE TABLE public.search_claimhistory (
 );
 
 
+ALTER TABLE public.search_claimhistory OWNER TO django;
 
 --
 -- Name: search_claimhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2866,6 +3213,7 @@ CREATE SEQUENCE public.search_claimhistory_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claimhistory_id_seq OWNER TO django;
 
 --
 -- Name: search_claimhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2914,6 +3262,7 @@ CREATE TABLE public.search_claimhistoryevent (
 );
 
 
+ALTER TABLE public.search_claimhistoryevent OWNER TO django;
 
 --
 -- Name: search_claimhistoryevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2928,6 +3277,7 @@ CREATE SEQUENCE public.search_claimhistoryevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claimhistoryevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_claimhistoryevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2951,6 +3301,7 @@ CREATE TABLE public.search_claimtagsevent (
 );
 
 
+ALTER TABLE public.search_claimtagsevent OWNER TO django;
 
 --
 -- Name: search_claimtagsevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -2965,6 +3316,7 @@ CREATE SEQUENCE public.search_claimtagsevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_claimtagsevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_claimtagsevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -2984,6 +3336,7 @@ CREATE TABLE public.search_court_appeals_to (
 );
 
 
+ALTER TABLE public.search_court_appeals_to OWNER TO django;
 
 --
 -- Name: search_court_appeals_to_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3014,6 +3367,7 @@ CREATE TABLE public.search_courtappealstoevent (
 );
 
 
+ALTER TABLE public.search_courtappealstoevent OWNER TO django;
 
 --
 -- Name: search_courtappealstoevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3063,6 +3417,7 @@ CREATE TABLE public.search_courtevent (
 );
 
 
+ALTER TABLE public.search_courtevent OWNER TO django;
 
 --
 -- Name: search_courtevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3077,6 +3432,7 @@ CREATE SEQUENCE public.search_courtevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_courtevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_courtevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3104,6 +3460,7 @@ CREATE TABLE public.search_courthouse (
 );
 
 
+ALTER TABLE public.search_courthouse OWNER TO django;
 
 --
 -- Name: search_courthouse_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3143,6 +3500,7 @@ CREATE TABLE public.search_courthouseevent (
 );
 
 
+ALTER TABLE public.search_courthouseevent OWNER TO django;
 
 --
 -- Name: search_courthouseevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3170,6 +3528,7 @@ CREATE SEQUENCE public.search_docket_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docket_id_seq OWNER TO django;
 
 --
 -- Name: search_docket_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3189,6 +3548,7 @@ CREATE TABLE public.search_docket_panel (
 );
 
 
+ALTER TABLE public.search_docket_panel OWNER TO django;
 
 --
 -- Name: search_docket_panel_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3202,6 +3562,7 @@ CREATE SEQUENCE public.search_docket_panel_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docket_panel_id_seq OWNER TO django;
 
 --
 -- Name: search_docket_panel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3221,6 +3582,7 @@ CREATE TABLE public.search_docket_tags (
 );
 
 
+ALTER TABLE public.search_docket_tags OWNER TO django;
 
 --
 -- Name: search_docket_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3234,6 +3596,7 @@ CREATE SEQUENCE public.search_docket_tags_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docket_tags_id_seq OWNER TO django;
 
 --
 -- Name: search_docket_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3260,6 +3623,7 @@ CREATE TABLE public.search_docketentry (
 );
 
 
+ALTER TABLE public.search_docketentry OWNER TO django;
 
 --
 -- Name: search_docketentry_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3273,6 +3637,7 @@ CREATE SEQUENCE public.search_docketentry_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketentry_id_seq OWNER TO django;
 
 --
 -- Name: search_docketentry_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3292,6 +3657,7 @@ CREATE TABLE public.search_docketentry_tags (
 );
 
 
+ALTER TABLE public.search_docketentry_tags OWNER TO django;
 
 --
 -- Name: search_docketentry_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3305,6 +3671,7 @@ CREATE SEQUENCE public.search_docketentry_tags_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketentry_tags_id_seq OWNER TO django;
 
 --
 -- Name: search_docketentry_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3336,6 +3703,7 @@ CREATE TABLE public.search_docketentryevent (
 );
 
 
+ALTER TABLE public.search_docketentryevent OWNER TO django;
 
 --
 -- Name: search_docketentryevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3350,6 +3718,7 @@ CREATE SEQUENCE public.search_docketentryevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketentryevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_docketentryevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3373,6 +3742,7 @@ CREATE TABLE public.search_docketentrytagsevent (
 );
 
 
+ALTER TABLE public.search_docketentrytagsevent OWNER TO django;
 
 --
 -- Name: search_docketentrytagsevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3387,6 +3757,7 @@ CREATE SEQUENCE public.search_docketentrytagsevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketentrytagsevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_docketentrytagsevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3459,6 +3830,7 @@ CREATE TABLE public.search_docketevent (
 );
 
 
+ALTER TABLE public.search_docketevent OWNER TO django;
 
 --
 -- Name: search_docketevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3473,6 +3845,7 @@ CREATE SEQUENCE public.search_docketevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_docketevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3496,6 +3869,7 @@ CREATE TABLE public.search_docketpanelevent (
 );
 
 
+ALTER TABLE public.search_docketpanelevent OWNER TO django;
 
 --
 -- Name: search_docketpanelevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3510,6 +3884,7 @@ CREATE SEQUENCE public.search_docketpanelevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_docketpanelevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_docketpanelevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3533,6 +3908,7 @@ CREATE TABLE public.search_dockettagsevent (
 );
 
 
+ALTER TABLE public.search_dockettagsevent OWNER TO django;
 
 --
 -- Name: search_dockettagsevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3547,6 +3923,7 @@ CREATE SEQUENCE public.search_dockettagsevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_dockettagsevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_dockettagsevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3567,6 +3944,7 @@ CREATE SEQUENCE public.search_opinion_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinion_id_seq OWNER TO django;
 
 --
 -- Name: search_opinion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3586,6 +3964,7 @@ CREATE TABLE public.search_opinion_joined_by (
 );
 
 
+ALTER TABLE public.search_opinion_joined_by OWNER TO django;
 
 --
 -- Name: search_opinion_joined_by_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3599,6 +3978,7 @@ CREATE SEQUENCE public.search_opinion_joined_by_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinion_joined_by_id_seq OWNER TO django;
 
 --
 -- Name: search_opinion_joined_by_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3619,6 +3999,7 @@ CREATE SEQUENCE public.search_opinioncluster_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinioncluster_id_seq OWNER TO django;
 
 --
 -- Name: search_opinioncluster_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3638,6 +4019,7 @@ CREATE TABLE public.search_opinioncluster_non_participating_judges (
 );
 
 
+ALTER TABLE public.search_opinioncluster_non_participating_judges OWNER TO django;
 
 --
 -- Name: search_opinioncluster_non_participating_judges_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3651,6 +4033,7 @@ CREATE SEQUENCE public.search_opinioncluster_non_participating_judges_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinioncluster_non_participating_judges_id_seq OWNER TO django;
 
 --
 -- Name: search_opinioncluster_non_participating_judges_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3670,6 +4053,7 @@ CREATE TABLE public.search_opinioncluster_panel (
 );
 
 
+ALTER TABLE public.search_opinioncluster_panel OWNER TO django;
 
 --
 -- Name: search_opinioncluster_panel_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3683,6 +4067,7 @@ CREATE SEQUENCE public.search_opinioncluster_panel_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinioncluster_panel_id_seq OWNER TO django;
 
 --
 -- Name: search_opinioncluster_panel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3740,6 +4125,7 @@ CREATE TABLE public.search_opinionclusterevent (
 );
 
 
+ALTER TABLE public.search_opinionclusterevent OWNER TO django;
 
 --
 -- Name: search_opinionclusterevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3754,6 +4140,7 @@ CREATE SEQUENCE public.search_opinionclusterevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionclusterevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionclusterevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3777,6 +4164,7 @@ CREATE TABLE public.search_opinionclusternonparticipatingjudgesevent (
 );
 
 
+ALTER TABLE public.search_opinionclusternonparticipatingjudgesevent OWNER TO django;
 
 --
 -- Name: search_opinionclusternonparticipatingjudgesevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3791,6 +4179,7 @@ CREATE SEQUENCE public.search_opinionclusternonparticipatingjudgesevent_pgh_id_s
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionclusternonparticipatingjudgesevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionclusternonparticipatingjudgesevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3814,6 +4203,7 @@ CREATE TABLE public.search_opinionclusterpanelevent (
 );
 
 
+ALTER TABLE public.search_opinionclusterpanelevent OWNER TO django;
 
 --
 -- Name: search_opinionclusterpanelevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3828,6 +4218,7 @@ CREATE SEQUENCE public.search_opinionclusterpanelevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionclusterpanelevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionclusterpanelevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3871,6 +4262,7 @@ CREATE TABLE public.search_opinionevent (
 );
 
 
+ALTER TABLE public.search_opinionevent OWNER TO django;
 
 --
 -- Name: search_opinionevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3885,6 +4277,7 @@ CREATE SEQUENCE public.search_opinionevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3908,6 +4301,7 @@ CREATE TABLE public.search_opinionjoinedbyevent (
 );
 
 
+ALTER TABLE public.search_opinionjoinedbyevent OWNER TO django;
 
 --
 -- Name: search_opinionjoinedbyevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3922,6 +4316,7 @@ CREATE SEQUENCE public.search_opinionjoinedbyevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionjoinedbyevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionjoinedbyevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3942,6 +4337,7 @@ CREATE TABLE public.search_opinionscited (
 );
 
 
+ALTER TABLE public.search_opinionscited OWNER TO django;
 
 --
 -- Name: search_opinionscited_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3955,6 +4351,7 @@ CREATE SEQUENCE public.search_opinionscited_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionscited_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionscited_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -3975,6 +4372,7 @@ CREATE TABLE public.search_opinionscitedbyrecapdocument (
 );
 
 
+ALTER TABLE public.search_opinionscitedbyrecapdocument OWNER TO django;
 
 --
 -- Name: search_opinionscitedbyrecapdocument_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -3989,6 +4387,7 @@ CREATE SEQUENCE public.search_opinionscitedbyrecapdocument_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_opinionscitedbyrecapdocument_id_seq OWNER TO django;
 
 --
 -- Name: search_opinionscitedbyrecapdocument_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4020,6 +4419,7 @@ CREATE TABLE public.search_originatingcourtinformation (
 );
 
 
+ALTER TABLE public.search_originatingcourtinformation OWNER TO django;
 
 --
 -- Name: search_originatingcourtinformation_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4033,6 +4433,7 @@ CREATE SEQUENCE public.search_originatingcourtinformation_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_originatingcourtinformation_id_seq OWNER TO django;
 
 --
 -- Name: search_originatingcourtinformation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4069,6 +4470,7 @@ CREATE TABLE public.search_originatingcourtinformationevent (
 );
 
 
+ALTER TABLE public.search_originatingcourtinformationevent OWNER TO django;
 
 --
 -- Name: search_originatingcourtinformationevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4083,6 +4485,7 @@ CREATE SEQUENCE public.search_originatingcourtinformationevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_originatingcourtinformationevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_originatingcourtinformationevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4105,6 +4508,7 @@ CREATE TABLE public.search_parenthetical (
 );
 
 
+ALTER TABLE public.search_parenthetical OWNER TO django;
 
 --
 -- Name: search_parenthetical_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4119,6 +4523,7 @@ CREATE SEQUENCE public.search_parenthetical_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_parenthetical_id_seq OWNER TO django;
 
 --
 -- Name: search_parenthetical_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4140,6 +4545,7 @@ CREATE TABLE public.search_parentheticalgroup (
 );
 
 
+ALTER TABLE public.search_parentheticalgroup OWNER TO django;
 
 --
 -- Name: search_parentheticalgroup_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4154,6 +4560,7 @@ CREATE SEQUENCE public.search_parentheticalgroup_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_parentheticalgroup_id_seq OWNER TO django;
 
 --
 -- Name: search_parentheticalgroup_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4194,6 +4601,7 @@ CREATE TABLE public.search_recapdocument (
 );
 
 
+ALTER TABLE public.search_recapdocument OWNER TO django;
 
 --
 -- Name: search_recapdocument_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4207,6 +4615,7 @@ CREATE SEQUENCE public.search_recapdocument_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_recapdocument_id_seq OWNER TO django;
 
 --
 -- Name: search_recapdocument_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4226,6 +4635,7 @@ CREATE TABLE public.search_recapdocument_tags (
 );
 
 
+ALTER TABLE public.search_recapdocument_tags OWNER TO django;
 
 --
 -- Name: search_recapdocument_tags_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4239,6 +4649,7 @@ CREATE SEQUENCE public.search_recapdocument_tags_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_recapdocument_tags_id_seq OWNER TO django;
 
 --
 -- Name: search_recapdocument_tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4284,6 +4695,7 @@ CREATE TABLE public.search_recapdocumentevent (
 );
 
 
+ALTER TABLE public.search_recapdocumentevent OWNER TO django;
 
 --
 -- Name: search_recapdocumentevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4298,6 +4710,7 @@ CREATE SEQUENCE public.search_recapdocumentevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_recapdocumentevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_recapdocumentevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4321,6 +4734,7 @@ CREATE TABLE public.search_recapdocumenttagsevent (
 );
 
 
+ALTER TABLE public.search_recapdocumenttagsevent OWNER TO django;
 
 --
 -- Name: search_recapdocumenttagsevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4335,6 +4749,7 @@ CREATE SEQUENCE public.search_recapdocumenttagsevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_recapdocumenttagsevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_recapdocumenttagsevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4360,6 +4775,7 @@ CREATE TABLE public.search_searchquery (
 );
 
 
+ALTER TABLE public.search_searchquery OWNER TO django;
 
 --
 -- Name: search_searchquery_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4387,6 +4803,7 @@ CREATE TABLE public.search_tag (
 );
 
 
+ALTER TABLE public.search_tag OWNER TO django;
 
 --
 -- Name: search_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4400,6 +4817,7 @@ CREATE SEQUENCE public.search_tag_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_tag_id_seq OWNER TO django;
 
 --
 -- Name: search_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
@@ -4425,6 +4843,7 @@ CREATE TABLE public.search_tagevent (
 );
 
 
+ALTER TABLE public.search_tagevent OWNER TO django;
 
 --
 -- Name: search_tagevent_pgh_id_seq; Type: SEQUENCE; Schema: public; Owner: django
@@ -4439,6 +4858,7 @@ CREATE SEQUENCE public.search_tagevent_pgh_id_seq
     CACHE 1;
 
 
+ALTER SEQUENCE public.search_tagevent_pgh_id_seq OWNER TO django;
 
 --
 -- Name: search_tagevent_pgh_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
