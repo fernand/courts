@@ -15,4 +15,4 @@ df = pl.scan_csv(
     pl.col("html_columbia").str.replace_all("\n", "\/n"),
     pl.col("html_with_citations").str.replace_all("\n", "\/n"),
     pl.col("extracted_by_ocr").str.replace_all("\n", "\/n"),
-]).sink_csv(output_file, quote_char="`")
+]).sink_csv(output_file, quote_char="`", quote_style="always")
