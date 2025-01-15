@@ -19,7 +19,7 @@ df_opinions = (
 
 filtered_df = df_opinions.collect(streaming=True)
 
-opinion_dict = dict(zip(filtered_df['id'].to_list(), filtered_df['html'].to_list()))
+opinion_dict = dict(zip(filtered_df['id'].to_list(), filtered_df['plain_text'].to_list()))
 
 with open('opinions.pkl', 'wb') as f:
     pickle.dump(opinion_dict, f)
