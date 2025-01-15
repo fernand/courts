@@ -13,8 +13,8 @@ df_opinions = (
         has_header=True,
         quote_char='`',
     )
-    .select(['id', 'html'])
-    .filter(pl.col('id').cast(pl.Int64).is_in(unique_opinion_ids))
+    .select(['id', 'plain_text'])
+    .filter(pl.col('id').is_in(unique_opinion_ids))
 )
 
 filtered_df = df_opinions.collect(streaming=True)
