@@ -1,7 +1,10 @@
-import polars as pl
 import pickle
 
+import polars as pl
+
+# n = 585754
 df_query = pl.read_csv('query.csv', columns=['opinion_id'])
+df_query = df_query.sample(n=1000)
 unique_opinion_ids = df_query['opinion_id'].unique().cast(pl.Int64)
 
 df_opinions = (
@@ -14,7 +17,7 @@ df_opinions = (
     .filter(pl.col('id').is_in(unique_opinion_ids))
 )
 
-filtered_df = df_opinions.collect()
+filtered_df = df_opinions.collect(streaming=True)
 
 opinion_dict = dict(zip(filtered_df['id'].to_list(), filtered_df['html'].to_list()))
 
