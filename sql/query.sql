@@ -1,4 +1,4 @@
-SELECT sd.date_filed, so.type, sd.case_name, so.id, sd.court_id AS opinion_count
+SELECT sd.date_filed, sd.case_name, so.id, sd.court_id AS opinion_count
 FROM public.search_opinion so
 JOIN public.search_opinioncluster soc ON so.cluster_id = soc.id
 JOIN public.search_docket sd ON soc.docket_id = sd.id
