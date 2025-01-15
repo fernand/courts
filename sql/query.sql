@@ -1,0 +1,6 @@
+SELECT sd.date_filed, so.type, sd.case_name, so.id, sd.court_id AS opinion_count
+FROM public.search_opinion so
+JOIN public.search_opinioncluster soc ON so.cluster_id = soc.id
+JOIN public.search_docket sd ON soc.docket_id = sd.id
+WHERE sd.date_filed >= '2010-01-01'
+AND sd.court_id = ANY (ARRAY['dcd', 'almd', 'alnd', 'alsd', 'akd', 'azd', 'ared', 'arwd', 'cacd', 'caed', 'cand', 'casd', 'cod', 'ctd', 'ded', 'flmd', 'flnd', 'flsd', 'gamd', 'gand', 'gasd', 'hid', 'idd', 'ilcd', 'ilnd', 'ilsd', 'innd', 'insd', 'iand', 'iasd', 'ksd', 'kyed', 'kywd', 'laed', 'lamd', 'lawd', 'med', 'mdd', 'mad', 'mied', 'miwd', 'mnd', 'msnd', 'mssd', 'moed', 'mowd', 'mtd', 'ned', 'nvd', 'nhd', 'njd', 'nmd', 'nyed', 'nynd', 'nysd', 'nywd', 'nced', 'ncmd', 'ncwd', 'ndd', 'ohnd', 'ohsd', 'oked', 'oknd', 'okwd', 'ord', 'paed', 'pamd', 'pawd', 'rid', 'scd', 'sdd', 'tned', 'tnmd', 'tnwd', 'txed', 'txnd', 'txsd', 'txwd', 'utd', 'vtd', 'vaed', 'vawd', 'waed', 'wawd', 'wvnd', 'wvsd', 'wied', 'wiwd', 'wyd', 'gud', 'nmid', 'prd', 'vid', 'californiad', 'illinoised', 'illinoisd', 'indianad', 'orld', 'ohiod', 'pennsylvaniad', 'southcarolinaed', 'southcarolinawd', 'tennessed', 'canalzoned']);
