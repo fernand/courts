@@ -22,7 +22,7 @@ def step_2_make_batch():
         if len(text) == 0:
             continue
         batch.append({
-            'custom_id': opinion_id,
+            'custom_id': str(opinion_id),
             'method': 'POST',
             'url': '/v1/chat/completions',
             'body': {
