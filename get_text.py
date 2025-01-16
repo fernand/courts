@@ -9,7 +9,7 @@ unique_opinion_ids = df_query['opinion_id'].unique()
 
 df_opinions = (
     pl.scan_csv(
-        r'C:\Users\Fernand\Downloads\opinions-2024-12-31.csv',
+        r'C:\Users\Fernand\courtlistener\opinions-2024-12-31.csv',
         has_header=True,
         quote_char='`',
     )
