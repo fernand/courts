@@ -34,16 +34,23 @@ def step_2_make_batch():
                     'json_schema': {
                         'name': 'references',
                         'schema': {
-                            'type': 'array',
-                            'items': {
-                                'type': 'object',
-                                'properties': {
-                                    'reference': {'type': 'string'},
-                                    'context': {'type': 'string'},
-                                },
-                                'required': ['reference', 'context'],
-                                'additionalProperties': False,
-                            }
+                            'type': 'object',
+                            'properties': {
+                                'references': {
+                                    'type': 'array',
+                                    'items': {
+                                        'type': 'object',
+                                        'properties': {
+                                            'reference': {'type': 'string'},
+                                            'context': {'type': 'string'},
+                                        },
+                                        'required': ['reference', 'context'],
+                                        'additionalProperties': False,
+                                    }
+                                }
+                            },
+                            'required': ['references'],
+                            'additionalProperties': False,
                         },
                         'strict': True,
                     },
